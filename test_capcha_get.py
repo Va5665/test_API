@@ -5,7 +5,7 @@ import pytest
 import json
 from json import JSONDecodeError
 BASE_URL = 'https://api.b2b.tdx.by/'
-token = "bV10Pnsc08O3xq9yVTg5m6pQOQtBJPXgUdljkrwzDzZ4GNpm6iGj72qP0xo9G7hz"
+token = "ZXKvrJZFwOeBpjEzqisc2kIWgg04l89rIf4OWN329fpCyGUnBHSqNgJVsXVCiqtK"
 token_bad = "8768oyfgit76"
 password = "Ms5r&jdSg"
 username = "petrychcho@mediatech.dev"
@@ -911,6 +911,8 @@ email = "petrychcho@mediatech.dev"
 # print("Тест пройден")
 #
 #
+# def str_to_datetime_FAQ(date_str):
+#     return datetime.strptime(date_str, "%d.%m.%y")
 #
 #
 # def test_faq_read():
@@ -933,45 +935,334 @@ email = "petrychcho@mediatech.dev"
 #                                              str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
 #     assert "date" in data and isinstance(data["date"],
 #                                              str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
-#     assert "next" in data and isinstance(data["question"],
+#     assert "next" in data and (data["next"] is None or isinstance(data["next"],
+#                                                                   int)), f"Не найден ключ 'next' или его значение имеет тип {type(data['next'])}: {data}"
+#     assert "prev" in data and (data["prev"] is None or isinstance(data["prev"],
+#                                                                   int)), f"Не найден ключ 'prev' или его значение имеет тип {type(data['prev'])}: {data}"
+
+#     next_url = f'{BASE_URL}api/v1/faq/{data["next"]}'
+#     prev_url = f'{BASE_URL}api/v1/faq/{data["prev"]}'
+#
+#     next_response = requests.get(next_url, headers=headers)
+#     prev_response = requests.get(prev_url, headers=headers)
+#
+#     assert next_response.status_code in (
+#     200, 404), f"Ожидаемый код состояния 200 или 404, получен {next_response.status_code}"
+#     assert prev_response.status_code in (
+#     200, 404), f"Ожидаемый код состояния 200 или 404, получен {prev_response.status_code}"
+#     current_date = str_to_datetime_FAQ(data["date"])
+#
+#     if next_response.status_code == 200:
+#         next_data = next_response.json()
+#         next_date = str_to_datetime_FAQ(next_data["date"])
+#         assert current_date >= next_date, f"Текущая дата меньше следующей: {data}"
+#
+#     if prev_response.status_code == 200:
+#         prev_data = prev_response.json()
+#         prev_date = str_to_datetime_FAQ(prev_data["date"])
+#         assert current_date <= prev_date, f"Текущая дата больше предыдущей: {data}"
+#
+
+
+
+""" Я считаю это баг. В первом тесте соблюдается
+ последовательность по убыванию дат , а в следующем тесте нет """
+
+# def test_news_list_id():
+#     url = f'{BASE_URL}api/v1/news'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#
+#     data = response.json()
+#
+#     midle_news_ID = data[1]
+#
+#     return midle_news_ID["id"]
+#
+# def test_news_list():
+#     url = f'{BASE_URL}api/v1/news'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+#
+#     data = response.json()
+#     assert len(data) > 0, f" Не верно, пришла {data}"
+#     prev_date = None
+#     for item in data:
+#         assert isinstance(item, dict), f" Не верно, пришла {data}"
+#         assert "id" in item, f" Не верно, пришла {data}"
+#
+#         assert "title" in item and isinstance(item["title"],
+#                                               str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
+#         assert "short" in item and isinstance(item["short"],
+#                                               str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
+#         assert "text" in item and isinstance(item["text"],
+#                                               str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
+#         assert "image" in item and isinstance(item["image"],
 #                                              str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
-#     assert "prev" in data and isinstance(data["question"],
+#         assert "date" in item and isinstance(item["date"],
 #                                              str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
 #
-#     assert "answer" in data, f"Не найден ключ 'answer' в ответе: {data}"
-#     assert "date" in data, f"Не найден ключ 'date' в ответе: {data}"
-#     assert "next" in data, f"Не найден ключ 'next' в ответе: {data}"
-#     assert "prev" in data, f"Не найден ключ 'prev' в ответе: {data}"
+#         # Проверка сортировки по убыванию даты
+#
+#         date = datetime.strptime(item["date"], "%d.%m.%y")
+#         if prev_date is not None:
+#             assert date <= prev_date, f" Не верно, список не отсортирован по убыванию даты: {data}"
+#         prev_date = date
+#
+#
+# def str_to_datetime(date_str):
+#     return datetime.strptime(date_str, "%d.%m.%y")
+#
+# def test_news_list_read():
+#     midle_id = test_news_list_id()
+#     url = f'{BASE_URL}api/v1/news/{midle_id}'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+#
+#     data = response.json()
+#     assert len(data) > 0, f" Не верно, пришла {data}"
+#
+#     assert "id" in data, f" Не верно, пришла {data}"
+#
+#     assert "title" in data and isinstance(data["title"],
+#                                           str), f"Не найден ключ 'title' или его значение не является строкой: {data}"
+#     assert "short" in data and isinstance(data["short"],
+#                                           str), f"Не найден ключ 'short' или его значение не является строкой: {data}"
+#
+#     assert "text" in data and isinstance(data["text"],
+#                                           str), f"Не найден ключ 'text' или его значение не является строкой: {data}"
+#     assert "image" in data and isinstance(data["image"],
+#                                          str), f"Не найден ключ 'image' или его значение не является строкой: {data}"
+#     assert "date" in data and isinstance(data["date"],
+#                                          str), f"Не найден ключ 'date' или его значение не является строкой: {data}"
+#     assert "next" in data and (data["next"] is None or isinstance(data["next"],
+#                                                                   int)), f"Не найден ключ 'next' или его значение имеет тип {type(data['next'])}: {data}"
+#     assert "prev" in data and (data["prev"] is None or isinstance(data["prev"],
+#                                                                   int)), f"Не найден ключ 'prev' или его значение имеет тип {type(data['prev'])}: {data}"
+
+#
+#     next_url = f'{BASE_URL}api/v1/news/{data["next"]}'
+#     prev_url = f'{BASE_URL}api/v1/news/{data["prev"]}'
+#
+#     next_response = requests.get(next_url, headers=headers)
+#     prev_response = requests.get(prev_url, headers=headers)
+#
+#     assert next_response.status_code == 200, f"Ожидаемый код состояния 200, получен {next_response.status_code}"
+#     assert prev_response.status_code == 200, f"Ожидаемый код состояния 200, получен {prev_response.status_code}"
+#
+#     next_data = next_response.json()
+#     prev_data = prev_response.json()
+#
+#     current_date = str_to_datetime(data["date"])
+#     next_date = str_to_datetime(next_data["date"])
+#     prev_date = str_to_datetime(prev_data["date"])
+#
+#     assert current_date <= prev_date, f"Текущая дата больше предыдущей: {data}"
+#     assert current_date >= next_date, f"Текущая дата меньше следующей: {data}"
+#
+""" Необходима для корректировки проверить
+ в каком виде должны быть значение ключей, 
+ потому что часто встречаются в Свагере ошибки """
+
+# def test_order_filters():
+#
+#     url = f'{BASE_URL}api/v1/order/filters'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+#     data = response.json()
+#     assert isinstance(data, list), f"Ожидается список, получено {type(data)}"
+#     assert len(data) > 0, "Список пуст"
+#
+#     for item in data:
+#         assert "id" in item and isinstance(item["id"],
+#                                            str), f"Не найден ключ 'id' или его значение имеет тип {type(item['id'])}: {item}"
+#         assert "name" in item and isinstance(item["name"],
+#                                              str), f"Не найден ключ 'name' или его значение имеет тип {type(item['name'])}: {item}"
+#         assert "type" in item and isinstance(item["type"],
+#                                              str), f"Не найден ключ 'type' или его значение имеет тип {type(item['type'])}: {item}"
+#         assert "data" in item and isinstance(item["data"],
+#                                              dict), f"Не найден ключ 'data' или его значение имеет тип {type(item['data'])}: {item}"
+#
+#         if "order_id" in item:
+#             assert isinstance(item["order_id"],
+#                               str), f"Ожидаемый тип данных для 'order_id' - str, получен {type(item['order_id'])}: {item}"
+#         if "contract" in item:
+#             assert isinstance(item["contract"],
+#                               str), f"Ожидаемый тип данных для 'contract' - str, получен {type(item['contract'])}: {item}"
+#         if "company" in item:
+#             assert isinstance(item["company"],
+#                               str), f"Ожидаемый тип данных для 'company' - str, получен {type(item['company'])}: {item}"
+#         if "status" in item:
+#             assert isinstance(item["status"],
+#                               str), f"Ожидаемый тип данных для 'status' - str, получен {type(item['status'])}: {item}"
+#         if "total" in item:
+#             assert isinstance(item["total"],
+#                               str), f"Ожидаемый тип данных для 'total' - str, получен {type(item['total'])}: {item}"
+#         if "currency" in item:
+#             assert isinstance(item["currency"],
+#                               str), f"Ожидаемый тип данных для 'currency' - str, получен {type(item['currency'])}: {item}"
+#         if "weight" in item:
+#             assert isinstance(item["weight"],
+#                               str), f"Ожидаемый тип данных для 'weight' - str, получен {type(item['weight'])}: {item}"
+#         if "volume" in item:
+#             assert isinstance(item["volume"],
+#                               str), f"Ожидаемый тип данных для 'volume' - str, получен {type(item['volume'])}: {item}"
+#         if "partner" in item:
+#             assert isinstance(item["partner"],
+#                               str), f"Ожидаемый тип данных для 'partner' - str, получен {type(item['partner'])}: {item}"
+#         if "user" in item:
+#             assert isinstance(item["user"],
+#                               str), f"Ожидаемый тип данных для 'user' - str, получен {type(item['user'])}: {item}"
+#         if "comment" in item:
+#             assert isinstance(item["comment"],
+#                               str), f"Ожидаемый тип данных для 'comment' - str, получен {type(item['comment'])}: {item}"
+#         if "delivery" in item:
+#             assert isinstance(item["delivery"],
+#                               str), f"Ожидаемый тип данных для 'delivery' - str, получен {type(item['delivery'])}: {item}"
+#         if "error" in item:
+#             assert isinstance(item["error"],
+#                               str), f"Ожидаемый тип данных для 'error' - str, получен {type(item['error'])}: {item}"
+#         if "updated" in item:
+#             assert isinstance(item["updated"],
+#                               str), f"Ожидаемый тип данных для 'updated' - str, получен {type(item['updated'])}: {item}"
+#         if "created" in item:
+#             assert isinstance(item["created"],
+#                               str), f"Ожидаемый тип данных для 'created' - str, получен {type(item['created'])}: {item}"
+#
+#         data_dict = item["data"]
+#         assert "popular_dictionary_values" in data_dict and isinstance(data_dict["popular_dictionary_values"],
+#                                                                        list), f"Не найден ключ 'popular_dictionary_values' или его значение имеет тип {type(data_dict['popular_dictionary_values'])}: {data_dict}"
+#         assert "options" in data_dict and isinstance(data_dict["options"],
+#                                                      list), f"Не найден ключ 'options' или его значение имеет тип {type(data_dict['options'])}: {data_dict}"
+#
+#         for option in data_dict["options"]:
+#             assert "id" in option and isinstance(option["id"],
+#                                                  int), f"Не найден ключ 'id' или его значение имеет тип {type(option['id'])}: {option}"
+#             assert "name" in option and isinstance(option["name"],
+#                                                    str), f"Не найден ключ 'name' или его значение имеет тип {type(option['name'])}: {option}"
+#
+#
 
 
 
 
-def test_news_list():
 
-    url = f'{BASE_URL}api/v1/faq'
-    headers = {
-        "accept": "application/json",
-        "X-CSRFToken": token
-    }
 
-    response = requests.get(url, headers=headers)
-    assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+""" Непонятно как отправлять POST JSON [1, 2, 3, 4, 5]"""
+# def test_order_merge():
+#     url = f'{BASE_URL}api/v1/order/merge'
+#     headers = {
+#         "accept": "application/json",
+#         "Content-Type": "application/json",
+#         "X-CSRFToken": token
+#     }
+#     data = [1, 2, 3, 4, 5]
+#
+#     response = requests.post(url, json=data, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
 
-    data = response.json()
-    assert len(data) > 0, f" Не верно, пришла {data}"
-    prev_date = None
-    for item in data:
-        assert isinstance(item, dict), f" Не верно, пришла {data}"
-        assert "id" in item, f" Не верно, пришла {data}"
-        assert "question" in item and isinstance(item["question"],
-                                               str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
-        assert "date" in item and isinstance(item["date"],
-                                             str), f"Не найден ключ 'question' или его значение не является строкой: {data}"
 
-        # Проверка сортировки по убыванию даты
-
-        date = datetime.strptime(item["date"], "%d.%m.%y")
-        if prev_date is not None:
-            assert date <= prev_date, f" Не верно, список не отсортирован по убыванию даты: {data}"
-        prev_date = date
-
+# def test_order_types():
+#
+#     url = f'{BASE_URL}api/v1/order/types'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+#     data = response.json()
+#     assert isinstance(data, list), f"Ожидается список, получено {type(data)}"
+#     assert len(data) > 0, "Список пуст"
+#
+#     for item in data:
+#         assert "id" in item, f"Не найден ключ 'id': {item}"
+#         assert isinstance(item["id"], int), f"Ожидаемый тип данных для 'id' - int, получен {type(item['id'])}: {item}"
+#
+#         assert "value" in item, f"Не найден ключ 'value': {item}"
+#         assert isinstance(item["value"],
+#                           int), f"Ожидаемый тип данных для 'value' - int, получен {type(item['value'])}: {item}"
+#
+#         assert "name" in item, f"Не найден ключ 'name': {item}"
+#         assert isinstance(item["name"],
+#                           str), f"Ожидаемый тип данных для 'name' - str, получен {type(item['name'])}: {item}"
+#
+#         if "order_id" in item:
+#             assert isinstance(item["order_id"],
+#                               str), f"Ожидаемый тип данных для 'order_id' - str, получен {type(item['order_id'])}: {item}"
+#
+#         if "contract" in item:
+#             assert isinstance(item["contract"],
+#                               str), f"Ожидаемый тип данных для 'contract' - str, получен {type(item['contract'])}: {item}"
+#
+#         if "company" in item:
+#             assert isinstance(item["company"],
+#                               str), f"Ожидаемый тип данных для 'company' - str, получен {type(item['company'])}: {item}"
+#
+#         if "status" in item:
+#             assert isinstance(item["status"],
+#                               str), f"Ожидаемый тип данных для 'status' - str, получен {type(item['status'])}: {item}"
+#
+#         if "total" in item:
+#             assert isinstance(item["total"],
+#                               str), f"Ожидаемый тип данных для 'total' - str, получен {type(item['total'])}: {item}"
+#
+#         if "currency" in item:
+#             assert isinstance(item["currency"],
+#                               str), f"Ожидаемый тип данных для 'currency' - str, получен {type(item['currency'])}: {item}"
+#
+#         if "weight" in item:
+#             assert isinstance(item["weight"],
+#                               str), f"Ожидаемый тип данных для 'weight' - str, получен {type(item['weight'])}: {item}"
+#
+#         if "volume" in item:
+#             assert isinstance(item["volume"],
+#                               str), f"Ожидаемый тип данных для 'volume' - str, получен {type(item['volume'])}: {item}"
+#
+#         if "partner" in item:
+#             assert isinstance(item["partner"],
+#                               str), f"Ожидаемый тип данных для 'partner' - str, получен {type(item['partner'])}: {item}"
+#
+#         if "user" in item:
+#             assert isinstance(item["user"],
+#                               str), f"Ожидаемый тип данных для 'user' - str, получен {type(item['user'])}: {item}"
+#
+#         if "comment" in item:
+#             assert isinstance(item["comment"],
+#                               str), f"Ожидаемый тип данных для 'comment' - str, получен {type(item['comment'])}: {item}"
+#
+#         if "delivery" in item:
+#             assert isinstance(item["delivery"],
+#                               str), f"Ожидаемый тип данных для 'delivery' - str, получен {type(item['delivery'])}: {item}"
+#
+#         if "error" in item:
+#             assert isinstance(item["error"], (
+#             str, type(None))), f"Ожидаемый тип данных для 'error' - str или None, получен {type(item['error'])}: {item}"
+#
+#         if "updated" in item:
+#             assert isinstance(item["updated"],
+#                               str), f"Ожидаемый тип данных для 'updated' - str, получен {type(item['updated'])}: {item}"
+#
+#         if "created" in item:
+#             assert isinstance(item["created"],
+#                               str), f"Ожидаемый тип данных для 'created' - str, получен {type(item['created'])}: {item}"
