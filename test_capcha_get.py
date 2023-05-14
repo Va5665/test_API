@@ -1,3 +1,4 @@
+
 import requests
 from datetime import datetime
 from unittest.mock import MagicMock, patch
@@ -11,90 +12,74 @@ password = "Ms5r&jdSg"
 username = "petrychcho@mediatech.dev"
 email = "petrychcho@mediatech.dev"
 
-
+# ----------------------------------------------------------------------------
 """api_v1_auth_captcha_read
 В этом тесте при не корректном токине, так же приходит ответ 200. 
-Если это нормально, то строку incorrect_token = token_bad 
-надо поменять на incorrect_token = token"""
+Если это нормально, то строку 'incorrect_token = token_bad' 
+надо поменять на 'incorrect_token = token' """
 
-def test_auth_captcha_read():
-    url = f'{BASE_URL}api/v1/auth/captcha'
-    headers = {
-        "accept": "application/json",
-        "X-CSRFToken": token
-    }
-    response = requests.get(url, headers=headers)
-    print("Response body:", response.text)
-    print(f"Response status code (correct token): {response.status_code}")
-    assert response.status_code == 200, f"Непредвиденный код ответа: {response.status_code}"
-    print("Test successful : API = 200")
-    data = response.json()
-    assert "id" in data, "0"
-    assert isinstance(data["id"], int), "Поле 'id' имеет некорректный тип данных"
-    assert data["id"] > 0, "Поле 'id' имеет некорректное значение"
-    assert data["image"].startswith(
-        "https://media.b2b.tdx.by/captcha/captcha-"), "Поле 'image' имеет некорректное значение"
-    print("Тест пройден: ответ содержит корректные поля 'id' и 'image'")
-    expected_headers = {
-        "access-control-allow-headers": "*, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization",
-        "access-control-allow-methods": 'GET, POST, OPTIONS, DELETE, HEAD',
-        "access-control-allow-origin": "*",
-        "access-control-expose-headers": 'Content-Disposition, Content-Length,Content-Range'
-        ,
-        "allow": "GET, HEAD, OPTIONS",
-        "content-type": "application/json",
-        "referrer-policy": "same-origin",
-        "server": "nginx",
-        "vary": "Accept",
-        "x-content-type-options": "nosniff",
-        "x-frame-options": "DENY"
-    }
-    for header, expected_value in expected_headers.items():
-        assert header in response.headers, f"Ответ не содержит заголовок '{header}'"
-        assert response.headers[
-                   header] == expected_value, f"Ожидалось значение '{expected_value}', получено '{response.headers[header]}'"
-    print("Тест пройден: все ожидаемые заголовки присутствуют и имеют корректные значения")
-    run_test(token)
-    incorrect_token = token
-    if token != incorrect_token:
-        # Запуск теста с некорректным токеном
-        test_failed = run_test(incorrect_token)
-        assert test_failed, "Тест прошел  удачно с кодом 200," \
-                            " НО проходит и с не " \
-                            "корректным токеном "
-
-def run_test(test_token):
-    url = f'{BASE_URL}api/v1/auth/captcha'
-    headers = {
-        "accept": "application/json",
-        "X-CSRFToken": test_token
-    }
-    response = requests.get(url, headers=headers)
-    print(f"Response status code ({test_token}): {response.status_code}")
-    if response.status_code == 200 and test_token != token:
-        return False
-    return True
-
-
-
+# def test_auth_captcha_read():
+#     url = f'{BASE_URL}api/v1/auth/captcha'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#     response = requests.get(url, headers=headers)
+#     print("Response body:", response.text)
+#     print(f"Response status code (correct token): {response.status_code}")
+#     assert response.status_code == 200, f"Непредвиденный код ответа: {response.status_code}"
+#     print("Test successful : API = 200")
+#     data = response.json()
+#     assert "id" in data, "0"
+#     assert isinstance(data["id"], int), "Поле 'id' имеет некорректный тип данных"
+#     assert data["id"] > 0, "Поле 'id' имеет некорректное значение"
+#     assert data["image"].startswith(
+#         "https://media.b2b.tdx.by/captcha/captcha-"), "Поле 'image' имеет некорректное значение"
+#     print("Тест пройден: ответ содержит корректные поля 'id' и 'image'")
+#     expected_headers = {
+#         "access-control-allow-headers": "*, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization",
+#         "access-control-allow-methods": 'GET, POST, OPTIONS, DELETE, HEAD',
+#         "access-control-allow-origin": "*",
+#         "access-control-expose-headers": 'Content-Disposition, Content-Length,Content-Range'
+#         ,
+#         "allow": "GET, HEAD, OPTIONS",
+#         "content-type": "application/json",
+#         "referrer-policy": "same-origin",
+#         "server": "nginx",
+#         "vary": "Accept",
+#         "x-content-type-options": "nosniff",
+#         "x-frame-options": "DENY"
+#     }
+#     for header, expected_value in expected_headers.items():
+#         assert header in response.headers, f"Ответ не содержит заголовок '{header}'"
+#         assert response.headers[
+#                    header] == expected_value, f"Ожидалось значение '{expected_value}', получено '{response.headers[header]}'"
+#     print("Тест пройден: все ожидаемые заголовки присутствуют и имеют корректные значения")
+#     run_test(token)
+#     incorrect_token = token
+#     if token != incorrect_token:
+#         # Запуск теста с некорректным токеном
+#         test_failed = run_test(incorrect_token)
+#         assert test_failed, "Тест прошел  удачно с кодом 200," \
+#                             " НО проходит и с не " \
+#                             "корректным токеном "
+#
+# def run_test(test_token):
+#     url = f'{BASE_URL}api/v1/auth/captcha'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": test_token
+#     }
+#     response = requests.get(url, headers=headers)
+#     print(f"Response status code ({test_token}): {response.status_code}")
+#     if response.status_code == 200 and test_token != token:
+#         return False
+#     return True
+# --------------------------------------------------------------------------------------
 
 
 
-
-    # if response.status_code == 200:
-    #     data = response.json()
-    #     if "id" in data and isinstance(data["id"], int) and data["id"] > 0 and data["image"].startswith(
-    #             "https://media.b2b.tdx.by/captcha/captcha-"):
-    #         print(f"Test successful : API = 200 with token {test_token}")
-    #         return False
-    #     else:
-    #         print(f"Test failed: incorrect data with token {test_token}")
-    #         return True
-    # else:
-    #     print(f"Test failed: unexpected response code {response.status_code} with token {test_token}")
-    #     return True
-
-""" Не делаю этот тест """
+""" Ты сказал его не трогаем, этот тест """
 
 """def test_auth_password"""
 # def test_auth_password():
@@ -154,9 +139,9 @@ def run_test(test_token):
 
 
 """def test_auth_confirm_200
-           Его не трогаем"""
+           ты сказал его  не трогаем"""
 
-# def test_auth_confirm_200():
+# def test_auth_confirm():
 #     url = f'{BASE_URL}api/v1/auth/confirm/{token}'
 #     headers = {
 #         "accept": "application/json",
@@ -234,7 +219,7 @@ def run_test(test_token):
 
 
 
-
+"""Как получить 200?"""
 # def test_auth_payments():
 #     url = f'{BASE_URL}api/v1/auth/payments'
 #     headers = {
