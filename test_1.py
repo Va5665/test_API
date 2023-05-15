@@ -412,7 +412,7 @@ def check_headers(expected_headers, response_headers):
 #     assert current_date <= prev_date, f"Текущая дата больше предыдущей: {data}"
 #     assert current_date >= next_date, f"Текущая дата меньше следующей: {data}"
 #     check_headers(api_test.expected_headers_get, response.headers)
-
+#
 #
 # def test_order_filters():
 #
