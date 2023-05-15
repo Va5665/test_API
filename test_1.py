@@ -59,7 +59,7 @@ def check_headers(expected_headers, response_headers):
         assert response_headers[header] == value, f"Неверное значение для заголовка '{header}': ожидалось '{value}', получено '{response_headers[header]}'"
 
 
-""" Этот тест проходит c ответом 200 даже с кривым токином, 
+""" Этот тест проходит c ответом 200 даже с кривым токином,
  если заменить 'incorrect_token = token'
  на 'incorrect_token = token_bad, то он упадет,
  спросить нормально это изи нет и в зависимости от этого
@@ -113,8 +113,8 @@ def run_test(self, test_token):
 
 
 """ Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп 
-функцию, чтоб раняла тест в случае прохождения теста с 
+это не повлияет на результат, могу как в предыдущем тесте ввести доп
+функцию, чтоб раняла тест в случае прохождения теста с
 кривым токеном"""
 
 def test_auth_login():
@@ -156,8 +156,8 @@ def test_auth_login():
 
 
 """ Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп 
-функцию, чтоб раняла тест в случае прохождения теста с 
+это не повлияет на результат, могу как в предыдущем тесте ввести доп
+функцию, чтоб раняла тест в случае прохождения теста с
 кривым токеном"""
 
 def test_auth_login():
@@ -200,8 +200,8 @@ def test_auth_login():
 
 
 """ Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп 
-функцию, чтоб раняла тест в случае прохождения теста с 
+это не повлияет на результат, могу как в предыдущем тесте ввести доп
+функцию, чтоб раняла тест в случае прохождения теста с
 кривым токеном"""
 def test_currencies_list():
     url = f'{BASE_URL}api/v1/currencies'
@@ -240,8 +240,8 @@ def test_currencies_list():
 
 
 """ Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп 
-функцию, чтоб раняла тест в случае прохождения теста с 
+это не повлияет на результат, могу как в предыдущем тесте ввести доп
+функцию, чтоб раняла тест в случае прохождения теста с
 кривым токеном"""
 def test_currencies_list():
     url = f'{BASE_URL}api/v1/currencies'
@@ -277,8 +277,8 @@ def test_currencies_list():
 
 
 """ Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп 
-функцию, чтоб раняла тест в случае прохождения теста с 
+это не повлияет на результат, могу как в предыдущем тесте ввести доп
+функцию, чтоб раняла тест в случае прохождения теста с
 кривым токеном"""
 
 
@@ -388,8 +388,8 @@ def test_faq_read():
 
 
 """ Я считаю это баг. В первом тесте соблюдается
- последовательность по убыванию дат , а в следующем тесте где 
- подставляем id нет, поэтому он падает. И так же с не корректным токином 
+ последовательность по убыванию дат , а в следующем тесте где
+ подставляем id нет, поэтому он падает. И так же с не корректным токином
  проходит тест """
 
 def get_news_list_id():
@@ -584,3 +584,213 @@ def test_order_filters():
 
 
     check_headers(api_test.expected_headers_get, response.headers)
+
+def test_order_types():
+
+    url = f'{BASE_URL}api/v1/order/types'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+    data = response.json()
+    assert isinstance(data, list), f"Ожидается список, получено {type(data)}"
+    assert len(data) > 0, "Список пуст"
+
+    for item in data:
+        assert "id" in item, f"Не найден ключ 'id': {item}"
+        assert isinstance(item["id"], int), f"Ожидаемый тип данных для 'id' - int, получен {type(item['id'])}: {item}"
+
+        assert "value" in item, f"Не найден ключ 'value': {item}"
+        assert isinstance(item["value"],
+                          int), f"Ожидаемый тип данных для 'value' - int, получен {type(item['value'])}: {item}"
+
+        assert "name" in item, f"Не найден ключ 'name': {item}"
+        assert isinstance(item["name"],
+                          str), f"Ожидаемый тип данных для 'name' - str, получен {type(item['name'])}: {item}"
+
+        if "order_id" in item:
+            assert isinstance(item["order_id"],
+                              str), f"Ожидаемый тип данных для 'order_id' - str, получен {type(item['order_id'])}: {item}"
+
+        if "contract" in item:
+            assert isinstance(item["contract"],
+                              str), f"Ожидаемый тип данных для 'contract' - str, получен {type(item['contract'])}: {item}"
+
+        if "company" in item:
+            assert isinstance(item["company"],
+                              str), f"Ожидаемый тип данных для 'company' - str, получен {type(item['company'])}: {item}"
+
+        if "status" in item:
+            assert isinstance(item["status"],
+                              str), f"Ожидаемый тип данных для 'status' - str, получен {type(item['status'])}: {item}"
+
+        if "total" in item:
+            assert isinstance(item["total"],
+                              str), f"Ожидаемый тип данных для 'total' - str, получен {type(item['total'])}: {item}"
+
+        if "currency" in item:
+            assert isinstance(item["currency"],
+                              str), f"Ожидаемый тип данных для 'currency' - str, получен {type(item['currency'])}: {item}"
+
+        if "weight" in item:
+            assert isinstance(item["weight"],
+                              str), f"Ожидаемый тип данных для 'weight' - str, получен {type(item['weight'])}: {item}"
+
+        if "volume" in item:
+            assert isinstance(item["volume"],
+                              str), f"Ожидаемый тип данных для 'volume' - str, получен {type(item['volume'])}: {item}"
+
+        if "partner" in item:
+            assert isinstance(item["partner"],
+                              str), f"Ожидаемый тип данных для 'partner' - str, получен {type(item['partner'])}: {item}"
+
+        if "user" in item:
+            assert isinstance(item["user"],
+                              str), f"Ожидаемый тип данных для 'user' - str, получен {type(item['user'])}: {item}"
+
+        if "comment" in item:
+            assert isinstance(item["comment"],
+                              str), f"Ожидаемый тип данных для 'comment' - str, получен {type(item['comment'])}: {item}"
+
+        if "delivery" in item:
+            assert isinstance(item["delivery"],
+                              str), f"Ожидаемый тип данных для 'delivery' - str, получен {type(item['delivery'])}: {item}"
+
+        if "error" in item:
+            assert isinstance(item["error"], (
+            str, type(None))), f"Ожидаемый тип данных для 'error' - str или None, получен {type(item['error'])}: {item}"
+
+        if "updated" in item:
+            assert isinstance(item["updated"],
+                              str), f"Ожидаемый тип данных для 'updated' - str, получен {type(item['updated'])}: {item}"
+
+        if "created" in item:
+            assert isinstance(item["created"],
+                              str), f"Ожидаемый тип данных для 'created' - str, получен {type(item['created'])}: {item}"
+
+
+    check_headers(api_test.expected_headers_get, response.headers)
+
+def test_quick():
+    url = f'{BASE_URL}api/v1/qsearch/'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200, f"Ожидаемый код ответа: 200, получен: {response.status_code}"
+
+    data = response.json()
+    assert "count" in data, "Отсутствует ключ 'count' в ответе"
+    assert "categories" in data, "Отсутствует ключ 'categories' в ответе"
+    assert "products" in data, "Отсутствует ключ 'products' в ответе"
+
+
+    assert isinstance(data["count"],
+                      int), f"Ожидаемый тип данных для 'count' - int, получен {type(data['count'])}: {data}"
+    assert data["categories"] is None or isinstance(data["categories"],
+                                                    list), f"Ожидаемый тип данных для 'categories' - None или list, получен {type(data['categories'])}: {data}"
+    assert data["products"] is None or isinstance(data["products"],
+                                                  list), f"Ожидаемый тип данных для 'products' - None или list, получен {type(data['products'])}: {data}"
+
+    check_headers(api_test.expected_headers_get_Accept, response.headers)
+
+
+keyword = 1
+def test_quick():
+    url = f'{BASE_URL}api/v1/qsearch/{keyword}'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200, f"Ожидаемый код ответа: 200, получен: {response.status_code}"
+
+    data = response.json()
+    assert "count" in data, "Отсутствует ключ 'count' в ответе"
+    assert "categories" in data, "Отсутствует ключ 'categories' в ответе"
+    assert "products" in data, "Отсутствует ключ 'products' в ответе"
+
+    assert isinstance(data["count"],
+                      int), f"Ожидаемый тип данных для 'count' - int, получен {type(data['count'])}: {data}"
+    assert data["categories"] is None or isinstance(data["categories"],
+                                                    list), f"Ожидаемый тип данных для 'categories' - None или list, получен {type(data['categories'])}: {data}"
+    assert data["products"] is None or isinstance(data["products"],
+                                                  list), f"Ожидаемый тип данных для 'products' - None или list, получен {type(data['products'])}: {data}"
+    check_headers(api_test.expected_headers_get_Accept, response.headers)
+
+
+def get_vendor_list_id():
+    url = f'{BASE_URL}api/v1/vendor/'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+
+    response = requests.get(url, headers=headers)
+
+    data = response.json()
+
+    vendor_id = data[0]
+
+    return vendor_id["id"]
+
+""" этот тест почему то проходит и с кривым токином"""
+
+def test_vendor_list():
+    url = f'{BASE_URL}api/v1/vendor'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200
+
+    vendors = response.json()
+
+    for vendor in vendors:
+        assert 'id' in vendor
+        assert isinstance(vendor['id'], int)
+
+        assert 'name' in vendor
+        assert isinstance(vendor['name'], str)
+        assert 1 <= len(vendor['name']) <= 256
+
+        if vendor['image'] is not None:
+            assert isinstance(vendor['image'], str)
+    check_headers(api_test.expected_headers_get, response.headers)
+
+def test_vendor_read():
+    first_id = get_vendor_list_id()
+    url = f'{BASE_URL}api/v1/vendor/{first_id}'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200
+
+    vendor = response.json()
+
+
+    assert 'id' in vendor
+    assert isinstance(vendor['id'], int)
+
+    assert 'name' in vendor
+    assert isinstance(vendor['name'], str)
+    assert 1 <= len(vendor['name']) <= 256
+    if vendor['image'] is not None:
+        assert isinstance(vendor['image'], str)
+    check_headers(api_test.expected_headers_get_Accept, response.headers)
+
+
+
+
+
+
+

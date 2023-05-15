@@ -1092,90 +1092,90 @@ email = "petrychcho@mediatech.dev"
 
 
 
-def test_order_filters():
-
-    url = f'{BASE_URL}api/v1/order/filters'
-    headers = {
-        "accept": "application/json",
-        "X-CSRFToken": token
-    }
-
-    response = requests.get(url, headers=headers)
-    assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
-    data = response.json()
-    assert isinstance(data, list), f"Ожидается список, получено {type(data)}"
-    assert len(data) > 0, "Список пуст"
-
-    for item in data:
-        assert "id" in item and isinstance(item["id"],
-                                           str), f"Не найден ключ 'id' или его значение имеет тип {type(item['id'])}: {item}"
-        assert "name" in item and isinstance(item["name"],
-                                             str), f"Не найден ключ 'name' или его значение имеет тип {type(item['name'])}: {item}"
-        assert "type" in item and isinstance(item["type"],
-                                             str), f"Не найден ключ 'type' или его значение имеет тип {type(item['type'])}: {item}"
-        assert "data" in item and isinstance(item["data"],
-                                             dict), f"Не найден ключ 'data' или его значение имеет тип {type(item['data'])}: {item}"
-
-        if "order_id" in item:
-            assert isinstance(item["order_id"],
-                              str), f"Ожидаемый тип данных для 'order_id' - str, получен {type(item['order_id'])}: {item}"
-        if "contract" in item:
-            assert isinstance(item["contract"],
-                              str), f"Ожидаемый тип данных для 'contract' - str, получен {type(item['contract'])}: {item}"
-        if "company" in item:
-            assert isinstance(item["company"],
-                              str), f"Ожидаемый тип данных для 'company' - str, получен {type(item['company'])}: {item}"
-        if "status" in item:
-            assert isinstance(item["status"],
-                              str), f"Ожидаемый тип данных для 'status' - str, получен {type(item['status'])}: {item}"
-        if "total" in item:
-            assert isinstance(item["total"],
-                              str), f"Ожидаемый тип данных для 'total' - str, получен {type(item['total'])}: {item}"
-        if "currency" in item:
-            assert isinstance(item["currency"],
-                              str), f"Ожидаемый тип данных для 'currency' - str, получен {type(item['currency'])}: {item}"
-        if "weight" in item:
-            assert isinstance(item["weight"],
-                              str), f"Ожидаемый тип данных для 'weight' - str, получен {type(item['weight'])}: {item}"
-        if "volume" in item:
-            assert isinstance(item["volume"],
-                              str), f"Ожидаемый тип данных для 'volume' - str, получен {type(item['volume'])}: {item}"
-        if "partner" in item:
-            assert isinstance(item["partner"],
-                              str), f"Ожидаемый тип данных для 'partner' - str, получен {type(item['partner'])}: {item}"
-        if "user" in item:
-            assert isinstance(item["user"],
-                              str), f"Ожидаемый тип данных для 'user' - str, получен {type(item['user'])}: {item}"
-        if "comment" in item:
-            assert isinstance(item["comment"],
-                              str), f"Ожидаемый тип данных для 'comment' - str, получен {type(item['comment'])}: {item}"
-        if "delivery" in item:
-            assert isinstance(item["delivery"],
-                              str), f"Ожидаемый тип данных для 'delivery' - str, получен {type(item['delivery'])}: {item}"
-        if "error" in item:
-            assert isinstance(item["error"],
-                              str), f"Ожидаемый тип данных для 'error' - str, получен {type(item['error'])}: {item}"
-        if "updated" in item:
-            assert isinstance(item["updated"],
-                              str), f"Ожидаемый тип данных для 'updated' - str, получен {type(item['updated'])}: {item}"
-        if "created" in item:
-            assert isinstance(item["created"],
-                              str), f"Ожидаемый тип данных для 'created' - str, получен {type(item['created'])}: {item}"
-
-        data_dict = item["data"]
-        assert "popular_dictionary_values" in data_dict and isinstance(data_dict["popular_dictionary_values"],
-                                                                       list), f"Не найден ключ 'popular_dictionary_values' или его значение имеет тип {type(data_dict['popular_dictionary_values'])}: {data_dict}"
-        assert "options" in data_dict and isinstance(data_dict["options"],
-                                                     list), f"Не найден ключ 'options' или его значение имеет тип {type(data_dict['options'])}: {data_dict}"
-
-        for option in data_dict["options"]:
-            assert "id" in option and isinstance(option["id"],
-                                                 int), f"Не найден ключ 'id' или его значение имеет тип {type(option['id'])}: {option}"
-            assert "name" in option and isinstance(option["name"],
-                                                   str), f"Не найден ключ 'name' или его значение имеет тип {type(option['name'])}: {option}"
-
-
-
+# def test_order_filters():
+#
+#     url = f'{BASE_URL}api/v1/order/filters'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+#     data = response.json()
+#     assert isinstance(data, list), f"Ожидается список, получено {type(data)}"
+#     assert len(data) > 0, "Список пуст"
+#
+#     for item in data:
+#         assert "id" in item and isinstance(item["id"],
+#                                            str), f"Не найден ключ 'id' или его значение имеет тип {type(item['id'])}: {item}"
+#         assert "name" in item and isinstance(item["name"],
+#                                              str), f"Не найден ключ 'name' или его значение имеет тип {type(item['name'])}: {item}"
+#         assert "type" in item and isinstance(item["type"],
+#                                              str), f"Не найден ключ 'type' или его значение имеет тип {type(item['type'])}: {item}"
+#         assert "data" in item and isinstance(item["data"],
+#                                              dict), f"Не найден ключ 'data' или его значение имеет тип {type(item['data'])}: {item}"
+#
+#         if "order_id" in item:
+#             assert isinstance(item["order_id"],
+#                               str), f"Ожидаемый тип данных для 'order_id' - str, получен {type(item['order_id'])}: {item}"
+#         if "contract" in item:
+#             assert isinstance(item["contract"],
+#                               str), f"Ожидаемый тип данных для 'contract' - str, получен {type(item['contract'])}: {item}"
+#         if "company" in item:
+#             assert isinstance(item["company"],
+#                               str), f"Ожидаемый тип данных для 'company' - str, получен {type(item['company'])}: {item}"
+#         if "status" in item:
+#             assert isinstance(item["status"],
+#                               str), f"Ожидаемый тип данных для 'status' - str, получен {type(item['status'])}: {item}"
+#         if "total" in item:
+#             assert isinstance(item["total"],
+#                               str), f"Ожидаемый тип данных для 'total' - str, получен {type(item['total'])}: {item}"
+#         if "currency" in item:
+#             assert isinstance(item["currency"],
+#                               str), f"Ожидаемый тип данных для 'currency' - str, получен {type(item['currency'])}: {item}"
+#         if "weight" in item:
+#             assert isinstance(item["weight"],
+#                               str), f"Ожидаемый тип данных для 'weight' - str, получен {type(item['weight'])}: {item}"
+#         if "volume" in item:
+#             assert isinstance(item["volume"],
+#                               str), f"Ожидаемый тип данных для 'volume' - str, получен {type(item['volume'])}: {item}"
+#         if "partner" in item:
+#             assert isinstance(item["partner"],
+#                               str), f"Ожидаемый тип данных для 'partner' - str, получен {type(item['partner'])}: {item}"
+#         if "user" in item:
+#             assert isinstance(item["user"],
+#                               str), f"Ожидаемый тип данных для 'user' - str, получен {type(item['user'])}: {item}"
+#         if "comment" in item:
+#             assert isinstance(item["comment"],
+#                               str), f"Ожидаемый тип данных для 'comment' - str, получен {type(item['comment'])}: {item}"
+#         if "delivery" in item:
+#             assert isinstance(item["delivery"],
+#                               str), f"Ожидаемый тип данных для 'delivery' - str, получен {type(item['delivery'])}: {item}"
+#         if "error" in item:
+#             assert isinstance(item["error"],
+#                               str), f"Ожидаемый тип данных для 'error' - str, получен {type(item['error'])}: {item}"
+#         if "updated" in item:
+#             assert isinstance(item["updated"],
+#                               str), f"Ожидаемый тип данных для 'updated' - str, получен {type(item['updated'])}: {item}"
+#         if "created" in item:
+#             assert isinstance(item["created"],
+#                               str), f"Ожидаемый тип данных для 'created' - str, получен {type(item['created'])}: {item}"
+#
+#         data_dict = item["data"]
+#         assert "popular_dictionary_values" in data_dict and isinstance(data_dict["popular_dictionary_values"],
+#                                                                        list), f"Не найден ключ 'popular_dictionary_values' или его значение имеет тип {type(data_dict['popular_dictionary_values'])}: {data_dict}"
+#         assert "options" in data_dict and isinstance(data_dict["options"],
+#                                                      list), f"Не найден ключ 'options' или его значение имеет тип {type(data_dict['options'])}: {data_dict}"
+#
+#         for option in data_dict["options"]:
+#             assert "id" in option and isinstance(option["id"],
+#                                                  int), f"Не найден ключ 'id' или его значение имеет тип {type(option['id'])}: {option}"
+#             assert "name" in option and isinstance(option["name"],
+#                                                    str), f"Не найден ключ 'name' или его значение имеет тип {type(option['name'])}: {option}"
+#
+#
+#
 
 
 
@@ -1197,12 +1197,12 @@ def test_order_filters():
 
 # def test_order_types():
 #
-    # url = f'{BASE_URL}api/v1/order/types'
-    # headers = {
-    #     "accept": "application/json",
-    #     "X-CSRFToken": token
-    # }
-
+#     url = f'{BASE_URL}api/v1/order/types'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
 #     response = requests.get(url, headers=headers)
 #     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
 #     data = response.json()
@@ -1280,7 +1280,7 @@ def test_order_filters():
 #         if "created" in item:
 #             assert isinstance(item["created"],
 #                               str), f"Ожидаемый тип данных для 'created' - str, получен {type(item['created'])}: {item}"
-
+#
 
 
 """Где брать id, с предыдущего кода не подходят"""
