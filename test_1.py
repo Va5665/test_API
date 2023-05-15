@@ -83,7 +83,9 @@ def check_headers(expected_headers, response_headers):
 #         "https://media.b2b.tdx.by/captcha/captcha-"), "Поле 'image' имеет некорректное значение"
 #     print("Тест пройден: ответ содержит корректные поля 'id' и 'image'")
 #
-#     check_headers(api_test.expected_headers_get_Accept, response.headers)
+
+#     check_headers(api_test.expected_headers_get, response.headers)
+
 #
 #
 #     run_test(api_test, token)
@@ -107,6 +109,7 @@ def check_headers(expected_headers, response_headers):
 #         return False
 #     return True
 #
+
 
 
 """ Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
@@ -149,6 +152,89 @@ def check_headers(expected_headers, response_headers):
 #     assert data['details'] == 'Неверное имя пользователя или пароль'
 #     assert data['token'] == 'guest'
 #     check_headers(api_test.expected_headers_post, response.headers)
+
+#
+
+""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
+это не повлияет на результат, могу как в предыдущем тесте ввести доп 
+функцию, чтоб раняла тест в случае прохождения теста с 
+кривым токеном"""
+
+# def test_auth_login():
+#     url = f"{BASE_URL}api/v1/auth/login"
+#     headers = {
+#         "accept": "application/json",
+#         "Content-Type": "application/json",
+#         "X-CSRFToken": token
+#     }
+#     data = {
+#         "username": username,
+#         "password": password
+#     }
+#     response = requests.post(url, headers=headers, json=data)
+#     print("Response body:", response.text)
+#     assert response.status_code == 200, f"Ожидается код 200, получен {response.status_code}"
+#     print("Test successful : API = 200")
+#     data = json.loads(response.text)
+#     assert response.status_code == 200
+#     assert data['status'] == 'Ok'
+#     assert data['details'] == 'Welcome!'
+#     assert 'token' in data
+#     print("Тест пройден: ответ содержит корректные поля")
+#
+#     data = {
+#         "username": "string",
+#         "password": "string"
+#     }
+#     response = requests.post(url, headers=headers, json=data)
+#     print("Response body:", response.text)
+#     assert response.status_code == 401, f"Ожидается код 401, получен {response.status_code}"
+#     print("Test NO successful : API = 401")
+#     data = response.json()
+#     assert data['status'] == 'Fail'
+#     assert data['details'] == 'Неверное имя пользователя или пароль'
+#     assert data['token'] == 'guest'
+#     check_headers(api_test.expected_headers_post, response.headers)
+
+
+
+
+""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
+это не повлияет на результат, могу как в предыдущем тесте ввести доп 
+функцию, чтоб раняла тест в случае прохождения теста с 
+кривым токеном"""
+# def test_currencies_list():
+#     url = f'{BASE_URL}api/v1/currencies'
+#     headers = {
+#         "accept": "application/json",
+#         "X-CSRFToken": token
+#     }
+#
+#     response = requests.get(url, headers=headers)
+#     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
+#
+#     data = response.json()
+#
+#     assert isinstance(data, list), "Ответ должен быть списком"
+#
+#
+#     for item in data:
+#         assert isinstance(item, dict), "Каждый элемент списка должен быть словарем"
+#         assert "id" in item, "Каждый элемент должен содержать ключ 'id'"
+#         assert "value" in item, "Каждый элемент должен содержать ключ 'value'"
+#         assert "code" in item, "Каждый элемент должен содержать ключ 'code'"
+#         assert "name" in item, "Каждый элемент должен содержать ключ 'name'"
+#
+#         assert isinstance(item["id"], int), "Поле 'id' должно быть целым числом"
+#         assert isinstance(item["value"], int), "Поле 'value' должно быть целым числом"
+#         assert isinstance(item["code"], str), "Поле 'code' должно быть строкой"
+#         assert isinstance(item["name"], str), "Поле 'name' должно быть строкой"
+#
+#         assert item["id"] > 0, "Поле 'id' должно быть положительным числом"
+#         assert item["value"] > 0, "Поле 'value' должно быть положительным числом"
+#         print("Тест пройден")
+#         check_headers(api_test.expected_headers_get, response.headers)
+
 #
 
 

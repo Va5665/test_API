@@ -840,6 +840,7 @@ email = "petrychcho@mediatech.dev"
 
 """ api_v1_currency_update_update Как получить 200"""
 
+
 # def test_cities_list_404():
 #     url = f'{BASE_URL}api/v1/cities'
 #     headers = {
