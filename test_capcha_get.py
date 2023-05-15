@@ -334,7 +334,7 @@ email = "petrychcho@mediatech.dev"
 #
 #
 
-
+""" Как получить 200?"""
 # def test_auth_profile_read():
 #     url = f'{BASE_URL}api/v1/auth/profile'
 #     headers = {
@@ -369,7 +369,7 @@ email = "petrychcho@mediatech.dev"
         #
 
 
-
+""" Как получить 200?"""
 # def test_auth_profile_update():
 #     url = f'{BASE_URL}api/v1/auth/profile'
 #     headers = {
@@ -443,7 +443,7 @@ email = "petrychcho@mediatech.dev"
 
 
 
-
+"""Код 500 Как получить 201?"""
 # def test_auth_restore():
 #     url = f'{BASE_URL}api/v1/auth/restore'
 #     headers = {
@@ -487,7 +487,7 @@ email = "petrychcho@mediatech.dev"
 #         assert  response.headers[header] == expected_value, f"Ожидалось значение '{expected_value}', получено '{response.headers[header]}'"
 #     print("Тест пройден: все ожидаемые заголовки присутствуют и имеют корректные значения")
 
-
+"""Как получить 200"""
 # def test__auth_restore_restore_confirm():
 #      url = f'{BASE_URL}api/v1/auth/restore/confirm/{token}'
 #      headers = {
@@ -531,7 +531,7 @@ email = "petrychcho@mediatech.dev"
 
 
 
-
+""" Как получить 200"""
 
 #
 # def test_cancels_list():
@@ -592,7 +592,7 @@ email = "petrychcho@mediatech.dev"
 
 
 
-
+""" Как получить 200?"""
 # def test_cart_list():
 #     url = f'{BASE_URL}api/v1/cart'
 #     headers = {
@@ -648,7 +648,7 @@ email = "petrychcho@mediatech.dev"
 
 #____________________________________________________________
 
-
+""" Как получить 200"""
 
 #
 # def test_cart_add():
@@ -719,7 +719,7 @@ email = "petrychcho@mediatech.dev"
 
 
 
-
+""" Как полуить 200"""
 #
 # def test_categories_list():
 #     url = f'{BASE_URL}api/v1/categories'
@@ -754,7 +754,14 @@ email = "petrychcho@mediatech.dev"
 #     print("Тест пройден: все ожидаемые заголовки присутствуют и имеют корректные значения")
 #
 
-# def test_cities_list_200():
+""" В этом тесте приходит 200, но
+ключи должны быть строкой, и приходит строка,
+а получаем ошибку, что должна быть int
+ TypeError: string indices must be integers, not 'str
+  и опять тест может приходить 200 с кривым токином'
+"""
+
+# def test_cities_list():
 #     url = f'{BASE_URL}api/v1/cities'
 #     headers = {
 #         "accept": 'application/json',
@@ -765,52 +772,41 @@ email = "petrychcho@mediatech.dev"
 #
 #     print("Test successful : API = 200")
 #     data = response.json()
-
-    # assert len(data) > 0, f"Ответ должен содержать хотя бы один город, пришла {data}"
-    # assert data["status"] == "string", f"Ответ должен содержать хотя бы один город, пришла {data}"
-    # assert data["details"] == "string", f"Ответ должен содержать хотя бы один город, пришла {data}"
-    # print("Тест пройден: ответ содержит хотя бы один город")
-    # assert len(data) > 0, f" Не верно, пришла {data}"
-    # assert isinstance(data, list), f" Не верно, пришла {data}"
-    # assert isinstance(data[0], dict), f" Не верно, пришла {data}"
-    # assert "status" in data[0], f" Не верно, пришла {data}"
-    # assert "details" in data[0], f" Не верно, пришла {data}"
-    # assert data[0]["status"] == "string", f" Не верно, пришла {data}"
-    # assert data[0]["details"] == "string", f" Не верно, пришла {data}"
-    # assert len(data) > 0, f" Не верно, пришла {data}"
-    # assert isinstance(data, list), f" Не верно, пришла {data}"
-    # assert isinstance(data[0], str), f" Не верно, пришла {data}"
-    #
-    # print("Тест пройден")
-    # expected_headers = {
-    #     "access-control-allow-headers": "*, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization",
-    #     "access-control-allow-methods": "GET, POST, OPTIONS, DELETE, HEAD",
-    #     "access-control-allow-origin": "*",
-    #     "access-control-expose-headers": 'Content-Disposition, Content-Length,Content-Range',
-    #     "allow": 'GET, HEAD, OPTIONS',
-    #     "content-type": "application/json",
-    #     "referrer-policy": "same-origin",
-    #     "server": "nginx",
-    #     "vary": "Accept",
-    #     "x-content-type-options": "nosniff",
-    #     "x-frame-options": "DENY"
-    # }
-    # for header, expected_value in expected_headers.items():
-    #     assert header in response.headers, f"Ответ не содержит заголовок '{header}'"
-    #     assert response.headers[
-    #                header] == expected_value, f"Ожидалось значение '{expected_value}', получено '{response.headers[header]}'"
-    # print("Тест пройден: все ожидаемые заголовки присутствуют и имеют корректные значения")
-
-# def test_cities_list_404():
-#     url = f'{BASE_URL}api/v1/cities'
-#     headers = {
-#         "accept": 'application/json',
-#         "X-CSRFToken": token_bad
+#
+#
+#     assert len(data) > 0, f" Не верно, пришла {data}"
+#
+#     for item in data:
+#
+#         assert item["status"] == "string", f" Не верно, пришла {data}"
+#         assert item["details"] == "string", f" Не верно, пришла {data}"
+#
+#
+#
+#     expected_headers = {
+#         "access-control-allow-headers": "*, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization",
+#         "access-control-allow-methods": "GET, POST, OPTIONS, DELETE, HEAD",
+#         "access-control-allow-origin": "*",
+#         "access-control-expose-headers": 'Content-Disposition, Content-Length,Content-Range',
+#         "allow": 'GET, HEAD, OPTIONS',
+#         "content-type": "application/json",
+#         "referrer-policy": "same-origin",
+#         "server": "nginx",
+#         "vary": "Accept",
+#         "x-content-type-options": "nosniff",
+#         "x-frame-options": "DENY"
 #     }
-#     response = requests.get(url, headers=headers)
-#     assert response.status_code == 200, f"Ожидается код 200, получен {response.status_code}"
+#     for header, expected_value in expected_headers.items():
+#         assert header in response.headers, f"Ответ не содержит заголовок '{header}'"
+#         assert response.headers[
+#                    header] == expected_value, f"Ожидалось значение '{expected_value}', получено '{response.headers[header]}'"
+#     print("Тест пройден: все ожидаемые заголовки присутствуют и имеют корректные значения")
 
-""" НЕ приходит 404, и с кривым токеном тоже приходит 200"""
+"""api_v1_compare Нужно ids """
+
+
+
+"""с кривым токеном тоже приходит 200"""
 # def test_currencies_list():
 #     url = f'{BASE_URL}api/v1/currencies'
 #     headers = {
@@ -820,32 +816,28 @@ email = "petrychcho@mediatech.dev"
 #
 #     response = requests.get(url, headers=headers)
 #     assert response.status_code == 200, f"Ожидаемый код состояния 200, получен {response.status_code}"
-
+#
 #     data = response.json()
-# #     assert len(data) > 0, f" Не верно, пришла {data}"
-""" это более корректно . тест проходит, НО ожидания в Swagger,
- который не соответствует ответу API"""
-    # for item in data:
-    #     assert isinstance(item, dict), f" Не верно, пришла {data}"
-    #     assert "id" in item, f" Не верно, пришла {data}"
-    #     assert "value" in item, f" Не верно, пришла {data}"
-    #     assert "code" in item, f" Не верно, пришла {data}"
-    #     assert "name" in item, f" Не верно, пришла {data}"
-    #
-    # print("Тест пройден")
-
-""" это НЕ корректно . тест НЕ проходит, НО ожидания в Swagger,
- который  соответствует ответу API"""
-#     assert len(data) > 0, f" Не верно, пришла {data}"
+#
+#     assert isinstance(data, list), "Ответ должен быть списком"
+#
 #
 #     for item in data:
-#         # assert isinstance(item, dict), f" Не верно, пришла {data}"
-#         # assert "status" in item, f" Не верно, пришла {data}"
-#         # assert "details" in item, f" Не верно, пришла {data}"
-#         assert item["status"] == "string", f" Не верно, пришла {data}"
-#         assert item["details"] == "string", f" Не верно, пришла {data}"
+#         assert isinstance(item, dict), "Каждый элемент списка должен быть словарем"
+#         assert "id" in item, "Каждый элемент должен содержать ключ 'id'"
+#         assert "value" in item, "Каждый элемент должен содержать ключ 'value'"
+#         assert "code" in item, "Каждый элемент должен содержать ключ 'code'"
+#         assert "name" in item, "Каждый элемент должен содержать ключ 'name'"
 #
+#         assert isinstance(item["id"], int), "Поле 'id' должно быть целым числом"
+#         assert isinstance(item["value"], int), "Поле 'value' должно быть целым числом"
+#         assert isinstance(item["code"], str), "Поле 'code' должно быть строкой"
+#         assert isinstance(item["name"], str), "Поле 'name' должно быть строкой"
+#
+#         assert item["id"] > 0, "Поле 'id' должно быть положительным числом"
+#         assert item["value"] > 0, "Поле 'value' должно быть положительным числом"
 #     print("Тест пройден")
+
 
 
 # def test_cities_list_404():
