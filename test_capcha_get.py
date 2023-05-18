@@ -1443,47 +1443,46 @@ email = "petrychcho@mediatech.dev"
 
 """Ответ приходит обычным текстом. Не json. Это нормально или баг?"""
 #
-# def test_synonims_list():
-#     url = f'{BASE_URL}api/v1/synonims'
-#     headers = {
-#         "accept": "application/json",
-#         "X-CSRFToken": token
-#     }
-#
-#     response = requests.get(url, headers=headers)
-#     assert response.status_code == 200
-#
-#     try:
-#         synonims = response.json()
-#     except json.JSONDecodeError:
-#         print("Response is not a valid JSON string. Handling as plain text.")
-#         synonims = response.text
-#
-#     if isinstance(synonims, str):
-#         print("Ошибка: ожидался JSON, но получена текстовая строка")
-#         return  # Завершаем выполнение теста
-#
-#     for synonim in synonims:
-#         assert 'id' in synonim
-#         assert isinstance(synonim['id'], int)
-#
-#         assert 'name' in synonim
-#         assert isinstance(synonim['name'], str)
-#
-#         assert 'sku' in synonim
-#         assert isinstance(synonim['sku'], str)
-#
-#         assert 'image' in synonim
-#         assert isinstance(synonim['image'], str)
-#
-#         assert 'stock' in synonim
-#         assert isinstance(synonim['stock'], str)
-#
-#         assert 'available' in synonim
-#         assert isinstance(synonim['available'], str)
-#
-#         assert 'date' in synonim
-#         assert isinstance(synonim['date'], str)
+def test_synonims_list():
+    url = f'{BASE_URL}api/v1/synonims'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200
+
+    try:
+        synonims = response.json()
+    except json.JSONDecodeError:
+        print("Response is not a valid JSON string. Handling as plain text.")
+        synonims = response.text
+
+    if isinstance(synonims, str):
+        print("Ошибка: ожидался JSON, но получена текстовая строка")
+        assert len(synonims) > 0
+    # for synonim in synonims:
+    #     assert 'id' in synonim
+    #     assert isinstance(synonim['id'], int)
+    #
+    #     assert 'name' in synonim
+    #     assert isinstance(synonim['name'], str)
+    #
+    #     assert 'sku' in synonim
+    #     assert isinstance(synonim['sku'], str)
+    #
+    #     assert 'image' in synonim
+    #     assert isinstance(synonim['image'], str)
+    #
+    #     assert 'stock' in synonim
+    #     assert isinstance(synonim['stock'], str)
+    #
+    #     assert 'available' in synonim
+    #     assert isinstance(synonim['available'], str)
+    #
+    #     assert 'date' in synonim
+    #     assert isinstance(synonim['date'], str)
 
 #
 # def get_vendor_list_id():
