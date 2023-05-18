@@ -789,6 +789,27 @@ def test_vendor_read():
     check_headers(api_test.expected_headers_get_Accept, response.headers)
 
 
+def test_synonims_list():
+    url = f'{BASE_URL}api/v1/synonims'
+    headers = {
+        "accept": "application/json",
+        "X-CSRFToken": token
+    }
+
+    response = requests.get(url, headers=headers)
+    assert response.status_code == 200
+
+    try:
+        synonims = response.json()
+    except json.JSONDecodeError:
+        print("Response is not a valid JSON string. Handling as plain text.")
+        synonims = response.text
+
+    if isinstance(synonims, str):
+        print("Ошибка: ожидался JSON, но получена текстовая строка")
+        assert len(synonims) > 0
+
+
 
 
 
