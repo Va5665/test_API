@@ -1,16 +1,18 @@
 import requests
+from pathlib import Path
+import configparser
 from datetime import datetime
 import json
-BASE_URL = 'https://api.b2b.tdx.by/'
-token = "1eXop0n9FOOQmO6nkqkzEEIGmqb7PvFjKwhHU4rwifZRvbmbvPKNpAJFy76FMNZC"
-token_bad = "8768oyfgit76"
 password = "Ms5r&jdSg"
 username = "petrychcho@mediatech.dev"
 email = "petrychcho@mediatech.dev"
-
+env_file_path = Path('.env.sample')
+config = configparser.ConfigParser()
+config.read(env_file_path)
+BASE_URL = config['DEFAULT']['BASE_URL']
 class APITest:
     def __init__(self):
-        self.token = token
+        self.token = "token"
         self.expected_headers_get = {
             "access-control-allow-headers": "*, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization",
             "access-control-allow-methods": "GET, POST, OPTIONS, DELETE, HEAD",
@@ -68,7 +70,7 @@ def test_auth_captcha_read():
     url = f'{BASE_URL}api/v1/auth/captcha'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
     response = requests.get(url, headers=headers)
     print("Response body:", response.text)
@@ -88,84 +90,19 @@ def test_auth_captcha_read():
 
 
 
-    run_test(api_test, token)
-    incorrect_token = token
-    if token != incorrect_token:
-        # Запуск теста с некорректным токеном
-        test_failed = run_test(incorrect_token)
-        assert test_failed, "Тест прошел  удачно с кодом 200," \
-                            " НО проходит и с не " \
-                            "корректным токеном "
-
-def run_test(self, test_token):
-    url = f'{BASE_URL}api/v1/auth/captcha'
-    headers = {
-        "accept": "application/json",
-        "X-CSRFToken": test_token
-    }
-    response = requests.get(url, headers=headers)
-    print(f"Response status code ({test_token}): {response.status_code}")
-    if response.status_code == 200 and self.token != self.token:
-        return False
-    return True
 
 
 
 
-""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп
-функцию, чтоб раняла тест в случае прохождения теста с
-кривым токеном"""
+
+
 
 def test_auth_login():
     url = f"{BASE_URL}api/v1/auth/login"
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
-        "X-CSRFToken": token
-    }
-    data = {
-        "username": username,
-        "password": password
-    }
-    response = requests.post(url, headers=headers, json=data)
-    print("Response body:", response.text)
-    assert response.status_code == 200, f"Ожидается код 200, получен {response.status_code}"
-    print("Test successful : API = 200")
-    data = json.loads(response.text)
-    assert response.status_code == 200
-    assert data['status'] == 'Ok'
-    assert data['details'] == 'Welcome!'
-    assert 'token' in data
-    print("Тест пройден: ответ содержит корректные поля")
-
-    data = {
-        "username": "string",
-        "password": "string"
-    }
-    response = requests.post(url, headers=headers, json=data)
-    print("Response body:", response.text)
-    assert response.status_code == 401, f"Ожидается код 401, получен {response.status_code}"
-    print("Test NO successful : API = 401")
-    data = response.json()
-    assert data['status'] == 'Fail'
-    assert data['details'] == 'Неверное имя пользователя или пароль'
-    assert data['token'] == 'guest'
-    check_headers(api_test.expected_headers_post, response.headers)
-
-
-
-""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп
-функцию, чтоб раняла тест в случае прохождения теста с
-кривым токеном"""
-
-def test_auth_login():
-    url = f"{BASE_URL}api/v1/auth/login"
-    headers = {
-        "accept": "application/json",
-        "Content-Type": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
     data = {
         "username": username,
@@ -199,15 +136,17 @@ def test_auth_login():
 
 
 
-""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп
-функцию, чтоб раняла тест в случае прохождения теста с
-кривым токеном"""
+
+
+
+
+
+
 def test_currencies_list():
     url = f'{BASE_URL}api/v1/currencies'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -239,15 +178,12 @@ def test_currencies_list():
 
 
 
-""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп
-функцию, чтоб раняла тест в случае прохождения теста с
-кривым токеном"""
+
 def test_currencies_list():
     url = f'{BASE_URL}api/v1/currencies'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -276,17 +212,13 @@ def test_currencies_list():
         check_headers(api_test.expected_headers_get_Accept, response.headers)
 
 
-""" Такая же проблема, Если ввести "X-CSRFToken": token_bad", то
-это не повлияет на результат, могу как в предыдущем тесте ввести доп
-функцию, чтоб раняла тест в случае прохождения теста с
-кривым токеном"""
 
 
 def get_first_faq_id():
     url = f'{BASE_URL}api/v1/faq'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -305,7 +237,7 @@ def test_faq_list():
     url = f'{BASE_URL}api/v1/faq'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -343,7 +275,7 @@ def test_faq_read():
     url = f'{BASE_URL}api/v1/faq/{faq_id}'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -396,7 +328,7 @@ def get_news_list_id():
     url = f'{BASE_URL}api/v1/news'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -411,7 +343,7 @@ def test_news_list():
     url = f'{BASE_URL}api/v1/news'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token_bad
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -451,7 +383,7 @@ def test_news_list_read():
     url = f'{BASE_URL}api/v1/news/{midle_id}'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -505,7 +437,7 @@ def test_order_filters():
     url = f'{BASE_URL}api/v1/order/filters'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -590,7 +522,7 @@ def test_order_types():
     url = f'{BASE_URL}api/v1/order/types'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -678,7 +610,7 @@ def test_quick():
     url = f'{BASE_URL}api/v1/qsearch/'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
     response = requests.get(url, headers=headers)
     assert response.status_code == 200, f"Ожидаемый код ответа: 200, получен: {response.status_code}"
@@ -704,7 +636,7 @@ def test_quick():
     url = f'{BASE_URL}api/v1/qsearch/{keyword}'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
     response = requests.get(url, headers=headers)
     assert response.status_code == 200, f"Ожидаемый код ответа: 200, получен: {response.status_code}"
@@ -727,7 +659,7 @@ def get_vendor_list_id():
     url = f'{BASE_URL}api/v1/vendor/'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -744,7 +676,7 @@ def test_vendor_list():
     url = f'{BASE_URL}api/v1/vendor'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -769,7 +701,7 @@ def test_vendor_read():
     url = f'{BASE_URL}api/v1/vendor/{first_id}'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
@@ -793,7 +725,7 @@ def test_synonims_list():
     url = f'{BASE_URL}api/v1/synonims'
     headers = {
         "accept": "application/json",
-        "X-CSRFToken": token
+        "X-CSRFToken": "token"
     }
 
     response = requests.get(url, headers=headers)
